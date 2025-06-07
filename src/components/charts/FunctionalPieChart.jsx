@@ -63,7 +63,7 @@ export default function KarbariExcelPieChart() {
   useEffect(() => {
     const loadExcel = async () => {
       try {
-        const response = await fetch("./data/KARBARI.xlsx");
+        const response = await fetch("./data/Landuse_id.xlsx");
         if (!response.ok) throw new Error("خطا در دریافت فایل");
 
         const blob = await response.blob();

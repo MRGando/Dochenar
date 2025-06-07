@@ -12,6 +12,10 @@
   --my-secondary: #f0e9e6;
   --my-accent: #9095a1;
 }
+*{
+  outline: none;
+  
+}
 body {
   @apply font-modam;
 }

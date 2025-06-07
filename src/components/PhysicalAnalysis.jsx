@@ -30,7 +30,13 @@ function PhysicalAnalysis() {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}>
-          <MapAnalysis />
+          <MapAnalysis
+            scrollWheelZoom={false} // ⬅️ غیرفعال کردن اسکرول زوم
+            dragging={false} // ⬅️ غیرفعال کردن جابجایی نقشه
+            doubleClickZoom={false} // ⬅️ غیرفعال کردن زوم با دابل کلیک
+            boxZoom={false} // ⬅️ غیرفعال کردن زوم با باکس
+            keyboard={false} // ⬅️ غیرفعال کردن کنترل با کیبورد
+          />
         </motion.div>
       </motion.div>
 

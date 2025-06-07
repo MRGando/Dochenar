@@ -189,11 +189,27 @@ export default function MapStreet() {
         zoom={17}
         minZoom={17}
         maxZoom={19}
-        scrollWheelZoom={true}
+        scrollWheelZoom={false}
+        dragging={true} // فعال کردن جابجایی نقشه
+        doubleClickZoom={false}
+        boxZoom={false}
+        keyboard={false}
         className="w-full h-full z-0 rounded-xl overflow-hidden"
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
-          setTimeout(() => mapInstance.invalidateSize(), 100); // ⬅ رفع مشکل اولیه
+          setTimeout(() => mapInstance.invalidateSize(), 100);
+          // اضافه کردن رویداد برای بازگرداندن مرکز نقشه
+          mapInstance.on("moveend", () => {
+            const center = mapInstance.getCenter();
+            if (
+              Math.abs(center.lat - 37.4777) > 0.0001 ||
+              Math.abs(center.lng - 57.3232) > 0.0001
+            ) {
+              mapInstance.setView([37.4777, 57.3232], mapInstance.getZoom(), {
+                animate: true,
+              });
+            }
+          });
         }}>
         <TileLayer url={baseLayerUrl} />
         {geoData && <GeoJSON data={geoData} style={layerStyles[layerType]} />}

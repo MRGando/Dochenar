@@ -115,6 +115,10 @@ const MapAnalysis = () => {
       zoom: 16,
       minZoom: 17,
       maxZoom: 18,
+      dragging: false, // ⬅️ غیرفعال کردن جابجایی نقشه
+      doubleClickZoom: false, // ⬅️ غیرفعال کردن زوم با دابل کلیک
+      boxZoom: false, // ⬅️ غیرفعال کردن زوم با باکس
+      keyboard: false, // ⬅️ غیرفعال کردن کنترل با کیبورد
     });
     // اجرای خودکار در بار اول
     const base = baseMaps["osm"]();

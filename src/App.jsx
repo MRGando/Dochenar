@@ -37,13 +37,12 @@ function App() {
           <div id="accesses">
             <Accesses />
           </div>
-          <div id="priorities">
-            <Priorities />
-          </div>
           <div id="quality">
             <QualityOfLife />
           </div>
-
+          <div id="priorities">
+            <Priorities />
+          </div>
           <div id="summary">
             <Summary />
           </div>
