@@ -25,17 +25,20 @@ function PhysicalAnalysis() {
         </div>
 
         <motion.div
-          className="col-span-1 md:col-span-2 shadow-md"
+          className="col-span-1 md:col-span-2 shadow-md min-h-[220px] h-[220px] sm:min-h-[300px] sm:h-[300px] md:min-h-[500px] md:h-full lg:min-h-[738px]"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}>
           <MapAnalysis
-            scrollWheelZoom={false} // ⬅️ غیرفعال کردن اسکرول زوم
-            dragging={false} // ⬅️ غیرفعال کردن جابجایی نقشه
-            doubleClickZoom={false} // ⬅️ غیرفعال کردن زوم با دابل کلیک
-            boxZoom={false} // ⬅️ غیرفعال کردن زوم با باکس
-            keyboard={false} // ⬅️ غیرفعال کردن کنترل با کیبورد
+            scrollWheelZoom={true}
+            dragging={true}
+            doubleClickZoom={false}
+            boxZoom={true}
+            keyboard={false}
+            zoom={window.innerWidth < 640 ? 13 : 15}
+            maxZoom={20}
+            recenterOnDrag={true} // بازگشت به مرکز پس از جابجایی
           />
         </motion.div>
       </motion.div>

@@ -121,7 +121,14 @@ function BaseMapSwitcher({ setBaseLayerUrl }) {
 }
 
 // ✅ کامپوننت اصلی
-export default function MapStreet({ center, draggable = true }) {
+export default function MapStreet({
+  center,
+  draggable = true,
+  scrollWheelZoom = false,
+  zoom,
+  minZoom,
+  maxZoom,
+}) {
   const [geoData, setGeoData] = useState(null);
   const [layerType, setLayerType] = useState("traffic");
   const [baseLayerUrl, setBaseLayerUrl] = useState(
@@ -151,6 +158,9 @@ export default function MapStreet({ center, draggable = true }) {
 
   // مرکز نقشه را از prop دریافت کن، اگر نبود مقدار پیش‌فرض قبلی را استفاده کن
   const mapCenter = center || [37.4777, 57.3232];
+  const mapZoom = zoom !== undefined ? zoom : 17;
+  const mapMinZoom = minZoom !== undefined ? minZoom : 17;
+  const mapMaxZoom = maxZoom !== undefined ? maxZoom : 19;
 
   return (
     <div
@@ -184,10 +194,10 @@ export default function MapStreet({ center, draggable = true }) {
       {/* نقشه */}
       <MapContainer
         center={mapCenter}
-        zoom={17}
-        minZoom={17}
-        maxZoom={19}
-        scrollWheelZoom={false}
+        zoom={mapZoom}
+        minZoom={mapMinZoom}
+        maxZoom={mapMaxZoom}
+        scrollWheelZoom={scrollWheelZoom}
         dragging={draggable}
         doubleClickZoom={false}
         boxZoom={false}
@@ -196,7 +206,6 @@ export default function MapStreet({ center, draggable = true }) {
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
           setTimeout(() => mapInstance.invalidateSize(), 100);
-          // فقط اگر draggable فعال باشد، رویداد بازگرداندن مرکز را اضافه کن
           if (draggable) {
             mapInstance.on("moveend", () => {
               const center = mapInstance.getCenter();

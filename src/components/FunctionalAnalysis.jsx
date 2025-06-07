@@ -32,7 +32,7 @@ export default function FunctionalAnalysis() {
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         viewport={{ once: true }}>
-        <MapFunctionalAnalysis />
+        <MapFunctionalAnalysis zoom={16} minZoom={15} maxZoom={18} />
       </motion.div>
     </motion.div>
   );

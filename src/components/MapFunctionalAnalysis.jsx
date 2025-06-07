@@ -4,7 +4,16 @@ import "leaflet/dist/leaflet.css";
 const isMobile = window.innerWidth < 768;
 const isLaptop = window.innerWidth < 1000;
 
-const MapLanduse = () => {
+const MapLanduse = ({
+  zoom = 16,
+  minZoom = 15,
+  maxZoom = 18,
+  scrollWheelZoom = false,
+  dragging = false,
+  doubleClickZoom = false,
+  boxZoom = false,
+  keyboard = false,
+}) => {
   const mapRef = useRef(null);
   const [mapInstance, setMapInstance] = useState(null);
   const tileLayerRef = useRef(null);
@@ -55,8 +64,15 @@ const MapLanduse = () => {
   useEffect(() => {
     const map = L.map(mapRef.current, {
       zoomControl: true,
-      scrollWheelZoom: true,
-    }).setView([37.474, 57.3337], 16);
+      scrollWheelZoom,
+      dragging,
+      doubleClickZoom,
+      boxZoom,
+      keyboard,
+      zoom,
+      minZoom,
+      maxZoom,
+    }).setView([37.475, 57.327], zoom);
 
     const tileLayer = L.tileLayer(baseMaps.osm).addTo(map);
     tileLayerRef.current = tileLayer;

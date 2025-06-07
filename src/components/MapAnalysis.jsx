@@ -5,7 +5,17 @@ import { Button } from "./UI/Button";
 const isMobile = window.innerWidth < 768;
 const isLaptop = window.innerWidth < 1000;
 
-const MapAnalysis = () => {
+const MapAnalysis = ({
+  zoom = 16,
+  minZoom = 15,
+  maxZoom = 18,
+  scrollWheelZoom = false,
+  dragging = false,
+  doubleClickZoom = false,
+  boxZoom = false,
+  keyboard = false,
+  recenterOnDrag = false,
+}) => {
   const mapRef = useRef(null);
 
   const baseLayerRef = useRef(null);
@@ -72,7 +82,6 @@ const MapAnalysis = () => {
         6: "نمای شیشه‌ای",
         7: "نمای ترکیبی",
         8: "نمای چوبی",
-        9: "نیاز به بازسازی یا فرسوده",
       },
       colors: [
         "#A0B7CF",
@@ -110,21 +119,35 @@ const MapAnalysis = () => {
   };
 
   useEffect(() => {
+    const defaultCenter = [37.475, 57.327];
     const initMap = L.map(mapRef.current, {
-      center: [37.4712, 57.3333],
-      zoom: 16,
-      minZoom: 17,
-      maxZoom: 18,
-      dragging: false, // ⬅️ غیرفعال کردن جابجایی نقشه
-      doubleClickZoom: false, // ⬅️ غیرفعال کردن زوم با دابل کلیک
-      boxZoom: false, // ⬅️ غیرفعال کردن زوم با باکس
-      keyboard: false, // ⬅️ غیرفعال کردن کنترل با کیبورد
+      center: defaultCenter,
+      zoom,
+      minZoom,
+      maxZoom,
+      scrollWheelZoom,
+      dragging,
+      doubleClickZoom,
+      boxZoom,
+      keyboard,
     });
     // اجرای خودکار در بار اول
     const base = baseMaps["osm"]();
     base.addTo(initMap);
     baseLayerRef.current = base;
     setMap(initMap);
+
+    if (recenterOnDrag && dragging) {
+      initMap.on("moveend", () => {
+        const center = initMap.getCenter();
+        if (
+          Math.abs(center.lat - defaultCenter[0]) > 0.0001 ||
+          Math.abs(center.lng - defaultCenter[1]) > 0.0001
+        ) {
+          initMap.setView(defaultCenter, initMap.getZoom(), { animate: true });
+        }
+      });
+    }
 
     fetch("./data/M15_ExportFeat_FeaturesToJSO.geojson")
       .then((res) => res.json())
@@ -262,7 +285,9 @@ const MapAnalysis = () => {
 
   return (
     <div className="h-full" style={{ direction: "rtl", fontFamily: "Modam" }}>
-      <div className="h-full" style={{ position: "relative" }}>
+      <div
+        className="h-full map-wrapper"
+        style={{ position: "relative", zIndex: 1, marginBottom: 24 }}>
         <div
           id="map"
           ref={mapRef}
@@ -270,9 +295,11 @@ const MapAnalysis = () => {
             borderRadius: "10px",
             height: "100%",
             width: "100%",
+            zIndex: 1,
           }}></div>
 
         <div
+          className="map-controls"
           style={{
             position: "absolute",
             top: "10px",
@@ -280,23 +307,22 @@ const MapAnalysis = () => {
             zIndex: 1000,
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
+            gap: "4px",
           }}>
-          <Button
-            onClick={() => handleMapTypeChange("tdad_tbqe")}
-            variant={layerType === "tdad_tbqe" ? "default" : "outline"}>
-            نقشه طبقات
-          </Button>
-          <Button
-            onClick={() => handleMapTypeChange("qdmt")}
-            variant={layerType === "qdmt" ? "default" : "outline"}>
-            نقشه قدمت
-          </Button>
-          <Button
-            onClick={() => handleMapTypeChange("nama")}
-            variant={layerType === "nama" ? "default" : "outline"}>
-            نقشه نما
-          </Button>
+          <select
+            onChange={(e) => handleMapTypeChange(e.target.value)}
+            style={{
+              padding: "10px 5px",
+              borderRadius: "10px",
+              fontSize: "14px",
+              border: "1px solid #ccc",
+              marginTop: "5px",
+              color: "black",
+            }}>
+            <option value="tdad_tbqe">نقشه طبقات</option>
+            <option value="qdmt">نقشه قدمت</option>
+            <option value="nama">نقشه نما</option>
+          </select>
           <select
             onChange={(e) => switchBaseMap(e.target.value)}
             style={{
@@ -316,6 +342,25 @@ const MapAnalysis = () => {
       </div>
 
       <style>{`
+        .map-wrapper {
+          height: 100%;
+          margin-bottom: 24px;
+          z-index: 1;
+        }
+        @media (max-width: 640px) {
+          .map-wrapper {
+            height: auto !important;
+            min-height: 0 !important;
+            margin-bottom: 72px !important;
+            z-index: 1;
+          }
+          #map {
+            min-height: 300px !important;
+            height: 300px !important;
+            max-height: 340px !important;
+            z-index: 1;
+          }
+        }
         .legend {
           background: white;
           padding: 10px;
@@ -323,6 +368,27 @@ const MapAnalysis = () => {
           border-radius: 5px;
           box-shadow: 0 0 5px #aaa;
           font-size: 13px;
+          max-width: 90vw;
+          width: 220px;
+        }
+        @media (max-width: 640px) {
+          .legend {
+            font-size: 11px;
+            padding: 6px;
+            width: 140px;
+            min-width: 0;
+          }
+          .legend h4 {
+            font-size: 12px;
+          }
+          .map-controls {
+            top: auto !important;
+            bottom: 10px !important;
+            right: auto !important;
+            left: 10px !important;
+            flex-direction: column;
+            align-items: flex-start;
+          }
         }
         .legend i {
           display: inline-block;
@@ -332,7 +398,6 @@ const MapAnalysis = () => {
           vertical-align: middle;
           border: 1px solid #999;
         }
-         
       `}</style>
     </div>
   );
