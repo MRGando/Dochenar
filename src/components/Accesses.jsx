@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import AccsessesArzeMabar from "./AccessesArzeMabar";
 import AccsessesKyfiatMabar from "./AccsessesKyfiatMabar";
-import MapStreet from "./MapStreet";
+import MapStreet from "./charts/MapStreet";
 import Details from "../config/details.json";
 export default function Accesses() {
   return (
@@ -14,7 +14,12 @@ export default function Accesses() {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
           className="order-1 md:order-1 md:col-span-2 lg:order-2 lg:col-span-2 rounded-xl shadow-sm min-h-[738px] lg:h-full">
-          <MapStreet />
+          {/* Move map center slightly left (decrease longitude) */}
+          <MapStreet
+            center={[37.476, 57.3275]}
+            draggable={false}
+            scrollWheelZoom={true}
+          />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -191,7 +191,7 @@ export default function EnhancedFloorChart() {
           <option value="line">نمودار خطی</option>
           <option value="pie">نمودار دایره‌ای</option>
         </select>
-        <h2 className="chart-title">نمودار اطلاعات طبقات</h2>
+        <h2 className="chart-title text-[var(--main)]">نمودار اطلاعات طبقات</h2>
       </div>
 
       {loading ? (
@@ -226,7 +226,6 @@ export default function EnhancedFloorChart() {
         .chart-title {
           font-size: 1.25rem;
           font-weight: 600;
-          color: #4f7c6b;
           margin-right: 1rem;
         }
 

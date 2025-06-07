@@ -167,7 +167,7 @@ export default function NamaChart() {
           <option value="line">نمودار خطی</option>
           <option value="pie">نمودار دایره‌ای</option>
         </select>
-        <h2 className="chart-title text-[#3A7CA5]">نمودار توزیع نماها</h2>
+        <h2 className="chart-title text-[var(--main)]">نمودار توزیع نماها</h2>
       </div>
 
       {loading ? (

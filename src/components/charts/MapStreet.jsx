@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { Button } from "./UI/Button";
+import { Button } from "../UI/Button";
 import L from "leaflet";
 const isMobile = window.innerWidth < 768;
 
@@ -121,7 +121,7 @@ function BaseMapSwitcher({ setBaseLayerUrl }) {
 }
 
 // ✅ کامپوننت اصلی
-export default function MapStreet() {
+export default function MapStreet({ center, draggable = true }) {
   const [geoData, setGeoData] = useState(null);
   const [layerType, setLayerType] = useState("traffic");
   const [baseLayerUrl, setBaseLayerUrl] = useState(
@@ -137,21 +137,20 @@ export default function MapStreet() {
       });
   }, []);
 
-  // ✅ invalidateSize هنگام تغییر اندازه پنجره (مانند تبلت یا چرخش صفحه)
   useEffect(() => {
     const handleResize = () => {
       if (mapRef.current) {
         mapRef.current.invalidateSize();
       }
     };
-
     window.addEventListener("resize", handleResize);
-
-    // پاک‌سازی event در unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  // مرکز نقشه را از prop دریافت کن، اگر نبود مقدار پیش‌فرض قبلی را استفاده کن
+  const mapCenter = center || [37.4777, 57.3232];
 
   return (
     <div
@@ -161,7 +160,6 @@ export default function MapStreet() {
       style={{
         borderRadius: "10px",
         height: isMobile ? "740px" : "full",
-
         width: "100%",
       }}>
       {/* کنترل‌ها */}
@@ -185,12 +183,12 @@ export default function MapStreet() {
 
       {/* نقشه */}
       <MapContainer
-        center={[37.4777, 57.3232]}
+        center={mapCenter}
         zoom={17}
         minZoom={17}
         maxZoom={19}
         scrollWheelZoom={false}
-        dragging={true} // فعال کردن جابجایی نقشه
+        dragging={draggable}
         doubleClickZoom={false}
         boxZoom={false}
         keyboard={false}
@@ -198,18 +196,20 @@ export default function MapStreet() {
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
           setTimeout(() => mapInstance.invalidateSize(), 100);
-          // اضافه کردن رویداد برای بازگرداندن مرکز نقشه
-          mapInstance.on("moveend", () => {
-            const center = mapInstance.getCenter();
-            if (
-              Math.abs(center.lat - 37.4777) > 0.0001 ||
-              Math.abs(center.lng - 57.3232) > 0.0001
-            ) {
-              mapInstance.setView([37.4777, 57.3232], mapInstance.getZoom(), {
-                animate: true,
-              });
-            }
-          });
+          // فقط اگر draggable فعال باشد، رویداد بازگرداندن مرکز را اضافه کن
+          if (draggable) {
+            mapInstance.on("moveend", () => {
+              const center = mapInstance.getCenter();
+              if (
+                Math.abs(center.lat - mapCenter[0]) > 0.0001 ||
+                Math.abs(center.lng - mapCenter[1]) > 0.0001
+              ) {
+                mapInstance.setView(mapCenter, mapInstance.getZoom(), {
+                  animate: true,
+                });
+              }
+            });
+          }
         }}>
         <TileLayer url={baseLayerUrl} />
         {geoData && <GeoJSON data={geoData} style={layerStyles[layerType]} />}
