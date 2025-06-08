@@ -1,7 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { Button } from "./UI/Button";
+import fetchExcelFile from "../utils/ExcelFetcher";
+const data = await fetchExcelFile("QEDMAT.xlsx");
+const qdmtObject = data.reduce((acc, item, idx) => {
+  acc[idx] = item["قدمت"];
+  return acc;
+}, {});
+
+// Output: { 0: "item1", 1: "item2", 2: "item3" }
 const isMobile = window.innerWidth < 768;
 const isLaptop = window.innerWidth < 1000;
 
@@ -51,15 +58,7 @@ const MapAnalysis = ({
 
     qdmt: {
       title: "قدمت ساختمان",
-      values: {
-        0: "درحال ساخت",
-        1: "۱ تا ۵ سال",
-        2: "۵ تا ۱۵ سال",
-        3: "۲۰ تا ۲۵ سال",
-        4: "۲۵ تا ۳۰ سال",
-        5: "۳۰ تا ۴۰  سال",
-        6: "۴۰ تا ۵۰ سال",
-      },
+      values: qdmtObject,
       colors: [
         "#E76F51",
         "#EE8959",
@@ -131,6 +130,7 @@ const MapAnalysis = ({
       boxZoom,
       keyboard,
     });
+
     // اجرای خودکار در بار اول
     const base = baseMaps["osm"]();
     base.addTo(initMap);

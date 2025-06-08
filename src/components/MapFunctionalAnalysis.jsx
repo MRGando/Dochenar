@@ -13,6 +13,9 @@ const MapLanduse = ({
   doubleClickZoom = false,
   boxZoom = false,
   keyboard = false,
+  center = [37.475, 57.327],
+  maxBounds,
+  mapHeight,
 }) => {
   const mapRef = useRef(null);
   const [mapInstance, setMapInstance] = useState(null);
@@ -72,11 +75,13 @@ const MapLanduse = ({
       zoom,
       minZoom,
       maxZoom,
-    }).setView([37.475, 57.327], zoom);
+      center,
+      maxBounds,
+    });
+    setMapInstance(map);
 
     const tileLayer = L.tileLayer(baseMaps.osm).addTo(map);
     tileLayerRef.current = tileLayer;
-    setMapInstance(map);
 
     fetch("./data/M15_ExportFeat_FeaturesToJSO.geojson")
       .then((res) => res.json())
@@ -153,7 +158,18 @@ const MapLanduse = ({
       });
 
     return () => map.remove();
-  }, []);
+  }, [
+    zoom,
+    minZoom,
+    maxZoom,
+    scrollWheelZoom,
+    dragging,
+    doubleClickZoom,
+    boxZoom,
+    keyboard,
+    center,
+    maxBounds,
+  ]);
 
   return (
     <div style={{ direction: "rtl", fontFamily: "Modam" }}>
@@ -162,7 +178,13 @@ const MapLanduse = ({
         ref={mapRef}
         style={{
           borderRadius: "10px",
-          height: isMobile ? (isLaptop ? "500px" : "500px") : "800px",
+          height: mapHeight
+            ? mapHeight
+            : isMobile
+              ? isLaptop
+                ? "500px"
+                : "500px"
+              : "800px",
 
           width: "100%",
         }}></div>

@@ -17,8 +17,9 @@ export default function Accesses() {
           {/* Move map center slightly left (decrease longitude) */}
           <MapStreet
             center={[37.476, 57.3275]}
-            draggable={false}
+            draggable={true}
             scrollWheelZoom={true}
+            maxBounds={[[37.474, 57.325], [37.478, 57.330]]} // محدودیت حرکت نقشه
           />
         </motion.div>
         <motion.div

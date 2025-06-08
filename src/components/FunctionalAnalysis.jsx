@@ -32,7 +32,22 @@ export default function FunctionalAnalysis() {
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         viewport={{ once: true }}>
-        <MapFunctionalAnalysis zoom={16} minZoom={15} maxZoom={18} />
+        <MapFunctionalAnalysis
+          zoom={window.innerWidth < 640 ? 14 : 16}
+          minZoom={15}
+          maxZoom={18}
+          scrollWheelZoom={true}
+          dragging={true}
+          doubleClickZoom={false}
+          boxZoom={false}
+          keyboard={false}
+          center={[37.476, 57.3275]}
+          maxBounds={[
+            [37.474, 57.325],
+            [37.478, 57.33],
+          ]}
+          mapHeight={window.innerWidth < 640 ? 420 : undefined}
+        />
       </motion.div>
     </motion.div>
   );

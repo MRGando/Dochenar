@@ -74,7 +74,7 @@ export default function EnhancedFloorChart() {
         return (
           <BarChart
             data={data}
-            margin={{ top: 20, right: 40, left: 20, bottom: 70 }}>
+            margin={{ top: 20, right: 40, left: -40, bottom: 70 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="name"
@@ -191,7 +191,7 @@ export default function EnhancedFloorChart() {
           <option value="line">نمودار خطی</option>
           <option value="pie">نمودار دایره‌ای</option>
         </select>
-        <h2 className="chart-title text-[var(--main)]">نمودار اطلاعات طبقات</h2>
+        <h2 className="chart-title">نمودار اطلاعات طبقات</h2>
       </div>
 
       {loading ? (
@@ -226,6 +226,7 @@ export default function EnhancedFloorChart() {
         .chart-title {
           font-size: 1.25rem;
           font-weight: 600;
+          color: #4f7c6b;
           margin-right: 1rem;
         }
 
@@ -256,7 +257,7 @@ export default function EnhancedFloorChart() {
         .loading-message,
         .no-data-message {
           text-align: center;
-          padding: 40px;
+          padding: 0px;
           color: #666;
           font-size: 16px;
         }

@@ -1,8 +1,8 @@
 import Details from "../config/details";
 import MapAnalysis from "./MapAnalysis";
-import NamaBarChart from "./charts/NamaBarChatrSelector";
-import FloorChartSelector from "./charts/FloorChartSelector";
-import GhedmatChartSelector from "./charts/GhedmatChartSelector";
+import NamaBarChart from "./charts/barCharts/NamaBarChatrSelector";
+import FloorChartSelector from "./charts/barCharts/FloorChartSelector";
+import GhedmatChartSelector from "./charts/barCharts/GhedmatChartSelector";
 /* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
 
@@ -31,20 +31,25 @@ function PhysicalAnalysis() {
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}>
           <MapAnalysis
+            zoom={16}
+            minZoom={15}
+            maxZoom={18}
             scrollWheelZoom={true}
             dragging={true}
             doubleClickZoom={false}
-            boxZoom={true}
+            boxZoom={false}
             keyboard={false}
-            zoom={window.innerWidth < 640 ? 13 : 15}
-            maxZoom={20}
-            recenterOnDrag={true} // بازگشت به مرکز پس از جابجایی
+            center={[37.476, 57.3275]}
+            maxBounds={[
+              [37.474, 57.325],
+              [37.478, 57.33],
+            ]}
           />
         </motion.div>
       </motion.div>
 
       <motion.div
-        className="flex flex-col gap-5 md:flex-row mt-5  md:gap-5 items-center justify-center "
+        className="flex flex-col gap-5 md:flex-row mt-5 md:gap-5 items-center justify-center "
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
