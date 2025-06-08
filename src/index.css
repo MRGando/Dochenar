@@ -12,9 +12,8 @@
   --my-secondary: #f0e9e6;
   --my-accent: #9095a1;
 }
-*{
+* {
   outline: none;
-  
 }
 body {
   @apply font-modam;
@@ -25,4 +24,11 @@ body {
   /* Default sideBar : #260404 */
   --box: #ffffff;
   --main: #ca3433;
+}
+
+@media (width <= 400px) {
+  p,
+  h1 {
+    font-size: 15px !important;
+  }
 }

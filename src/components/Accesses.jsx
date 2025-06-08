@@ -7,7 +7,7 @@ import Details from "../config/details.json";
 export default function Accesses() {
   return (
     <section className="">
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5">
+      <div className="grid h-full grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5">
         {/* نقشه - در تبلت بالاتر از بخش متن می‌آید */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -19,7 +19,12 @@ export default function Accesses() {
             center={[37.476, 57.3275]}
             draggable={true}
             scrollWheelZoom={true}
-            maxBounds={[[37.474, 57.325], [37.478, 57.330]]} // محدودیت حرکت نقشه
+            zoom={true}
+            maxZoom={20}
+            maxBounds={[
+              [37.474, 57.325],
+              [37.478, 57.33],
+            ]} // محدودیت حرکت نقشه
           />
         </motion.div>
         <motion.div

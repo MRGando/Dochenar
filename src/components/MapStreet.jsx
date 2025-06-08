@@ -153,6 +153,12 @@ export default function MapStreet() {
     };
   }, []);
 
+  // Define max bounds for the map (southwest and northeast corners)
+  const maxBounds = [
+    [37.47, 57.32], // Southwest
+    [37.485, 57.335], // Northeast
+  ];
+
   return (
     <div
       className="relative w-full h-full lg:h-[100%]"
@@ -160,9 +166,10 @@ export default function MapStreet() {
       ref={mapRef}
       style={{
         borderRadius: "10px",
-        height: isMobile ? "740px" : "full",
-
+        height: "100%",
         width: "100%",
+        minHeight: "320px",
+        maxHeight: "100vh",
       }}>
       {/* کنترل‌ها */}
       <div className="absolute top-4 right-4 z-[1000] flex flex-col gap-2 pointer-events-auto">
@@ -190,6 +197,7 @@ export default function MapStreet() {
         minZoom={17}
         maxZoom={19}
         scrollWheelZoom={true}
+        maxBounds={maxBounds}
         className="w-full h-full z-0 rounded-xl overflow-hidden"
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;

@@ -13,9 +13,10 @@ const isMobile = window.innerWidth < 768;
 const isLaptop = window.innerWidth < 1000;
 
 const MapAnalysis = ({
-  zoom = 16,
-  minZoom = 15,
-  maxZoom = 18,
+  // Use the same zoom settings as MapStreet
+  zoom = 17,
+  minZoom = 17,
+  maxZoom = 19,
   scrollWheelZoom = false,
   dragging = false,
   doubleClickZoom = false,
@@ -117,6 +118,12 @@ const MapAnalysis = ({
       ),
   };
 
+  // Define max bounds for the map (southwest and northeast corners)
+  const maxBounds = [
+    [37.47, 57.32], // Southwest
+    [37.485, 57.335], // Northeast
+  ];
+
   useEffect(() => {
     const defaultCenter = [37.475, 57.327];
     const initMap = L.map(mapRef.current, {
@@ -129,6 +136,7 @@ const MapAnalysis = ({
       doubleClickZoom,
       boxZoom,
       keyboard,
+      maxBounds,
     });
 
     // اجرای خودکار در بار اول

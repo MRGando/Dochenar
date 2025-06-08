@@ -5,16 +5,16 @@ const isMobile = window.innerWidth < 768;
 const isLaptop = window.innerWidth < 1000;
 
 const MapLanduse = ({
-  zoom = 16,
+  // Use the same zoom settings as MapStreet
+  zoom = 17,
   minZoom = 15,
-  maxZoom = 18,
+  maxZoom = 50,
   scrollWheelZoom = false,
   dragging = false,
   doubleClickZoom = false,
   boxZoom = false,
   keyboard = false,
   center = [37.475, 57.327],
-  maxBounds,
   mapHeight,
 }) => {
   const mapRef = useRef(null);
@@ -76,7 +76,10 @@ const MapLanduse = ({
       minZoom,
       maxZoom,
       center,
-      maxBounds,
+      maxBounds: [
+        [37.474, 57.325], // Southwest
+        [37.478, 57.33], // Northeast
+      ],
     });
     setMapInstance(map);
 
@@ -168,7 +171,6 @@ const MapLanduse = ({
     boxZoom,
     keyboard,
     center,
-    maxBounds,
   ]);
 
   return (

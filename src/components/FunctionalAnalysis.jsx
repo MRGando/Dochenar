@@ -33,7 +33,7 @@ export default function FunctionalAnalysis() {
         transition={{ duration: 0.8, delay: 0.2 }}
         viewport={{ once: true }}>
         <MapFunctionalAnalysis
-          zoom={window.innerWidth < 640 ? 14 : 16}
+          zoom={window.innerWidth < 640 ? 14 : 18}
           minZoom={15}
           maxZoom={18}
           scrollWheelZoom={true}
